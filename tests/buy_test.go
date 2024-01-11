@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/juantmoore/pay-sdk"
+	"github.com/coinbase-samples/pay-sdk-go"
 )
 
 func TestBuyConfig(t *testing.T) {

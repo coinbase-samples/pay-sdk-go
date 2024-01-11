@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/juantmoore/pay-sdk"
+	"github.com/coinbase-samples/pay-sdk-go"
 )
 
 func TestSetOptions(t *testing.T) {

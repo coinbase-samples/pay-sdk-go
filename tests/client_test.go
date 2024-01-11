@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/juantmoore/pay-sdk"
+	"github.com/coinbase-samples/pay-sdk-go"
 )
 
 func TestSetHeaders(t *testing.T) {
