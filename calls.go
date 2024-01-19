@@ -36,41 +36,7 @@ func (c *Client) BuyConfig(ctx context.Context) ([]byte, error) {
 
 }
 
-// How would I make BuyOptions one function? Instead of two func, maybe pass a *BuyOptionsRequest
-func (c *Client) BuyOptions(ctx context.Context, countryCode string) (*BuyOptionsResponse, error) {
-
-	url := fmt.Sprintf(c.HttpBaseUrl + "/options")
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	req = c.SetOptionsParams(req, countryCode)
-	c.SetHeaders(req)
-
-	resp, err := c.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-
-	apiResponse := &BuyOptionsResponse{}
-	if err = json.Unmarshal(body, apiResponse); err != nil {
-		return nil, err
-	}
-
-	return apiResponse, nil
-
-}
-
-func (c *Client) BuyOptionsWithSubdivision(ctx context.Context, countryCode string, subdivision string) (*BuyOptionsResponse, error) {
+func (c *Client) BuyOptions(ctx context.Context, countryCode string, subdivision *string) (*BuyOptionsResponse, error) {
 
 	url := fmt.Sprintf(c.HttpBaseUrl + "/buy/options")
 
@@ -79,7 +45,11 @@ func (c *Client) BuyOptionsWithSubdivision(ctx context.Context, countryCode stri
 		return nil, err
 	}
 
-	req = c.SetOptionsWithSubdivision(req, countryCode, subdivision)
+	if subdivision != nil {
+		req = c.SetOptionsWithSubdivision(req, countryCode, *subdivision)
+	} else {
+		req = c.SetOptionsParams(req, countryCode)
+	}
 	c.SetHeaders(req)
 
 	resp, err := c.HttpClient.Do(req)
