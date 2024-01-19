@@ -53,18 +53,18 @@ func (c *Client) SetOptionsWithSubdivision(r *http.Request, countryCode string, 
 
 func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 	baseUrl := fmt.Sprintf(c.HttpBaseUrl)
-	userPart := fmt.Sprintf("%s/transactions", url.PathEscape(params.PartnerUserId))
+	userPart := fmt.Sprintf("/user/%s/transactions", url.PathEscape(params.PartnerUserId))
 	v := url.Values{}
 
 	if params.PageKey != nil {
-		v.Set("PageKey", *params.PageKey)
+		v.Set("page_key", *params.PageKey)
 	}
 
 	pageSize := params.PageSize
 	if *pageSize <= 0 {
 		*pageSize = 1
 	}
-	v.Set("PageSize", fmt.Sprintf("%d", pageSize))
+	v.Set("page_size", fmt.Sprintf("%d", pageSize))
 
 	return baseUrl + userPart + "?" + v.Encode()
 }
