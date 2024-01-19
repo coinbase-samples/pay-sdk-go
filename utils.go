@@ -57,10 +57,7 @@ func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 	userPart := fmt.Sprintf("/user/%s/transactions", url.PathEscape(params.PartnerUserId))
 	v := url.Values{}
 
-	if params.PageKey != nil {
-		v.Set("page_key", *params.PageKey)
-	}
-
+	v.Set("page_key", GetPageKey(params.PageKey, "1"))
 	v.Set("page_size", GetPageSize(params.PageSize))
 
 	return baseUrl + userPart + "?" + v.Encode()
