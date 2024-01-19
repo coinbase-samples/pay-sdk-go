@@ -10,7 +10,7 @@ type Client struct {
 	HttpClient  http.Client
 	Credentials *Credentials
 	HttpBaseUrl string
-	Host        string //new
+	Host        string
 }
 
 func NewClient(creds *Credentials, httpClient http.Client) *Client {
@@ -19,7 +19,7 @@ func NewClient(creds *Credentials, httpClient http.Client) *Client {
 		HttpClient:  httpClient,
 		Credentials: creds,
 		HttpBaseUrl: baseUrl,
-		Host:        DefaultHost, //new
+		Host:        DefaultHost,
 	}
 }
 
