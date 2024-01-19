@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 )
 
 const (
@@ -60,11 +61,7 @@ func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 		v.Set("page_key", *params.PageKey)
 	}
 
-	pageSize := params.PageSize
-	if *pageSize <= 0 {
-		*pageSize = 1
-	}
-	v.Set("page_size", fmt.Sprintf("%d", pageSize))
+	v.Set("page_size", GetPageSize(params.PageSize))
 
 	return baseUrl + userPart + "?" + v.Encode()
 }
@@ -164,4 +161,18 @@ func handleApiResponse(resp *http.Response) error {
 
 	return apiError
 
+}
+
+func GetPageSize(pageSize *int) string {
+	if pageSize == nil || *pageSize < 0 {
+		return "1"
+	}
+	return strconv.Itoa(*pageSize)
+}
+
+func GetPageKey(ptr *string, defaultValue string) string {
+	if ptr != nil {
+		return *ptr
+	}
+	return defaultValue
 }
