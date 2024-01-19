@@ -38,7 +38,7 @@ func (c *Client) BuyConfig(ctx context.Context) ([]byte, error) {
 
 func (c *Client) BuyOptions(ctx context.Context, countryCode string, subdivision *string) (*BuyOptionsResponse, error) {
 
-	url := fmt.Sprintf(c.HttpBaseUrl + "/buy/options")
+	url := fmt.Sprintf(c.HttpBaseUrl + "/options")
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
