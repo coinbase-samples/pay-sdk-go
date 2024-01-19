@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 	"os"
 	"testing"
 	"time"
@@ -14,7 +15,7 @@ import (
 	"github.com/coinbase-samples/pay-sdk-go"
 )
 
-func TestSetOptions(t *testing.T) {
+func TestSetOptionsParams(t *testing.T) {
 	//Arrange
 	confirmUrl := "https://pay.coinbase.com/api/v1/buy/options?country=US"
 	creds := &pay.Credentials{
@@ -44,7 +45,7 @@ func TestSetOptions(t *testing.T) {
 
 }
 
-func TestSetOptionsSubdivision(t *testing.T) {
+func TestSetOptionsWithSubdivision(t *testing.T) {
 
 	//Arrange
 	countryCode := "US"
@@ -75,4 +76,38 @@ func TestSetOptionsSubdivision(t *testing.T) {
 	if req.URL.String() != confirmUrl {
 		t.Fatalf("unexpected url: got %s, expected %s", req.URL.String(), confirmUrl)
 	}
+}
+
+func TestBuildTransactionUrl(t *testing.T) {
+
+	userId := "1234-5678"
+	expectedUrl := "https://pay.coinbase.com/api/v1/buy/user/1234-5678/transactions?page_key=1&page_size=1"
+	pageKey := "1"
+	pageSize := int(1)
+
+	params := &pay.TransactionRequest{
+		PartnerUserId: userId,
+		PageKey:       &pageKey,
+		PageSize:      &pageSize,
+	}
+
+	creds := &pay.Credentials{
+		ApiKey: os.Getenv("CBPAY_API_KEY"),
+		AppId:  os.Getenv("CBPAY_APP_ID"),
+	}
+
+	c := pay.NewClient(creds, http.Client{})
+	result := c.BuildTransactionUrl(params)
+	expectedUrlParsed, _ := url.Parse(expectedUrl)
+	resultParsed, _ := url.Parse(result)
+
+	if resultParsed.Path != expectedUrlParsed.Path {
+		t.Fatalf("unexpected path: got %s, expected %s", resultParsed.Path, expectedUrlParsed.Path)
+	}
+
+	if resultParsed.RawQuery != expectedUrlParsed.RawQuery {
+		t.Fatalf("unexpected query: got %s, expected %s", resultParsed.RawQuery, expectedUrlParsed.RawQuery)
+
+	}
+
 }
