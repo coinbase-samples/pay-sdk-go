@@ -93,7 +93,7 @@ func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptio
 	//How do I check for this to include them in the parameters when generating the url?
 
 	parsedUrl.RawQuery = v.Encode()
-	fmt.Println(parsedUrl.String())
+
 	return parsedUrl.String(), nil
 }
 
