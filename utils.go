@@ -89,9 +89,6 @@ func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptio
 	v.Set("appId", c.Credentials.AppId)
 	v.Set("destinationWallets", string(destinationWallets))
 
-	//sometimes p.OnrampAppParams will have some options fields incluced.
-	//How do I check for this to include them in the parameters when generating the url?
-
 	parsedUrl.RawQuery = v.Encode()
 
 	return parsedUrl.String(), nil

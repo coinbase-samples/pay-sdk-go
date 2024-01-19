@@ -140,7 +140,6 @@ func TestGenerateOnRampUrl(t *testing.T) {
 		OnRampAppParams: onRampParams,
 	}
 
-	//expected url
 	parsedUrl, _ := url.Parse(c.Host)
 	parsedUrl.Path = "/buy/select-asset"
 	destinationWalletsJson, _ := json.Marshal(destinationWallets)
