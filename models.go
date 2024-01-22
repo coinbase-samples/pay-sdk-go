@@ -30,10 +30,6 @@ type BuyOptionsRequest struct {
 	Subdivision *string `json:"subdivision,omitempty"`
 }
 
-// type BuyOptionsResponse struct {
-// 	Data *OptionsData `json:"data"`
-// }
-
 type BuyOptionsResponse struct {
 	PaymentCurrencies  []Currencies         `json:"payment_currencies"`
 	PurchaseCurrencies []PurchaseCurrencies `json:"purchase_currencies"`
