@@ -13,7 +13,6 @@ import (
 
 func TestBuyConfig(t *testing.T) {
 
-	//Arrange
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -24,10 +23,8 @@ func TestBuyConfig(t *testing.T) {
 	c := pay.NewClient(creds, http.Client{})
 	buyConfig := pay.ConfigData{}
 
-	//Act
 	config, err := c.BuyConfig(ctx)
 
-	//Assert
 	if err != nil {
 		t.Fatalf("BuyConfig returned an unexpected error: %v", err)
 	}
@@ -37,7 +34,30 @@ func TestBuyConfig(t *testing.T) {
 	}
 
 	if len(buyConfig.Countries) == 0 {
-		t.Errorf("Expected BuyConfig to return at least one country, got none")
+		t.Fatal("error expected BuyConfig to return at least one country, got none")
 	}
 
+}
+
+func TestBuyOptions(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	creds := &pay.Credentials{
+		ApiKey: os.Getenv("CBPAY_API_KEY"),
+		AppId:  os.Getenv("CBPAY_APP_ID"),
+	}
+	c := pay.NewClient(creds, http.Client{})
+
+	cc := "US"
+	subdivision := "NY"
+
+	response, err := c.BuyOptions(ctx, cc, &subdivision)
+	if err != nil {
+		t.Fatalf("error retrieving buyoptions")
+	}
+
+	if response.PaymentCurrencies == nil && response.PurchaseCurrencies == nil {
+		t.Fatalf("error buy response returned nil")
+	}
 }
