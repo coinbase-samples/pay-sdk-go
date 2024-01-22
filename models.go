@@ -60,10 +60,6 @@ type Networks struct {
 	ContractAddress string `json:"contract_address"`
 }
 
-type BuyQuoteResponse struct {
-	Data *BuyQuoteData `json:"data"`
-}
-
 type BuyQuotePayload struct {
 	PurchaseCurrency string  `json:"purchase_currency"`
 	PurchaseNetwork  *string `json:"purchase_network,omitempty"`
@@ -74,7 +70,7 @@ type BuyQuotePayload struct {
 	Subdivision      *string `json:"subdivision,omitempty"`
 }
 
-type BuyQuoteData struct {
+type BuyQuoteResponse struct {
 	PaymentTotal    PaymentTotal    `json:"payment_total"`
 	PaymentSubtotal PaymentSubtotal `json:"payment_subtotal"`
 	PurchaseAmount  PurchaseAmount  `json:"purchase_amount"`
