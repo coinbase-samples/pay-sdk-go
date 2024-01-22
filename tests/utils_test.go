@@ -17,7 +17,6 @@ import (
 )
 
 func TestSetOptionsParams(t *testing.T) {
-	//Arrange
 	confirmUrl := "https://pay.coinbase.com/api/v1/buy/options?country=US"
 	creds := &pay.Credentials{
 		ApiKey: os.Getenv("CBPAY_API_KEY"),
@@ -36,10 +35,8 @@ func TestSetOptionsParams(t *testing.T) {
 
 	country := "US"
 
-	//Act
 	c.SetOptionsParams(req, country)
 
-	//Assert
 	if req.URL.String() != confirmUrl {
 		t.Fatalf("unexpected url: got %s, expected %s", req.URL.String(), confirmUrl)
 	}
@@ -70,10 +67,8 @@ func TestSetOptionsWithSubdivision(t *testing.T) {
 	country := "US"
 	sub := "NY"
 
-	//Act
 	c.SetOptionsWithSubdivision(req, country, sub)
 
-	//Assert
 	if req.URL.String() != confirmUrl {
 		t.Fatalf("unexpected url: got %s, expected %s", req.URL.String(), confirmUrl)
 	}

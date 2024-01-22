@@ -10,7 +10,6 @@ import (
 
 func TestSetHeaders(t *testing.T) {
 
-	//Arrange
 	appId := "123"
 	apiKey := "456"
 	url := ""
@@ -25,15 +24,8 @@ func TestSetHeaders(t *testing.T) {
 	}
 
 	c := pay.NewClient(creds, http.Client{})
-	fmt.Printf("apiKey before: %s \n", c.Credentials.ApiKey)
-	fmt.Printf("appId before: %s \n", c.Credentials.AppId)
 
-	//Act
 	c.SetHeaders(req)
-	fmt.Printf("apiKey: %s \n", req.Header.Get("CBPAY-API-KEY"))
-	fmt.Printf("appId: %s \n", req.Header.Get("CBPAY-APP-ID"))
-
-	//Assert
 
 	if req.Header.Get("CBPAY-APP-ID") != appId {
 		t.Errorf("Expected CBPAY_API_KEY to be %s, got %s", appId, req.Header.Get("CBPAY-APP-ID"))
@@ -46,7 +38,6 @@ func TestSetHeaders(t *testing.T) {
 
 func TestBaseUrl(t *testing.T) {
 
-	//Arrange
 	creds := &pay.Credentials{
 		ApiKey: "123",
 		AppId:  "456",
