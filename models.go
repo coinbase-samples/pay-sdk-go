@@ -71,36 +71,16 @@ type BuyQuotePayload struct {
 }
 
 type BuyQuoteResponse struct {
-	PaymentTotal    PaymentTotal    `json:"payment_total"`
-	PaymentSubtotal PaymentSubtotal `json:"payment_subtotal"`
-	PurchaseAmount  PurchaseAmount  `json:"purchase_amount"`
-	CoinbaseFee     CoinbaseFee     `json:"coinbase_fee"`
-	NetworkFee      NetworkFee      `json:"network_fee"`
-	QuoteId         string          `json:"quote_id"`
+	PaymentTotal    Money  `json:"payment_total"`
+	PaymentSubtotal Money  `json:"payment_subtotal"`
+	PurchaseAmount  Money  `json:"purchase_amount"`
+	CoinbaseFee     Money  `json:"coinbase_fee"`
+	NetworkFee      Money  `json:"network_fee"`
+	QuoteId         string `json:"quote_id"`
 }
 
-type PaymentTotal struct {
-	Amount   string `json:"amount"`
-	Currency string `json:"currency"`
-}
-
-type PaymentSubtotal struct {
-	Amount   string `json:"amount"`
-	Currency string `json:"currency"`
-}
-
-type PurchaseAmount struct {
-	Amount   string `json:"amount"`
-	Currency string `json:"currency"`
-}
-
-type CoinbaseFee struct {
-	Amount   string `json:"amount"`
-	Currency string `json:"currency"`
-}
-
-type NetworkFee struct {
-	Amount   string `json:"amount"`
+type Money struct {
+	Value    string `json:"value"`
 	Currency string `json:"currency"`
 }
 
