@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"testing"
@@ -95,5 +96,23 @@ func TestBuyQuote(t *testing.T) {
 }
 
 func TestTransactioNStatus(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
+	creds := &pay.Credentials{
+		ApiKey: os.Getenv("CBPAY_API_KEY"),
+		AppId:  os.Getenv("CBPAY_APP_ID"),
+	}
+	c := pay.NewClient(creds, http.Client{})
+
+	tx := &pay.TransactionRequest{
+		PartnerUserId: "",
+	}
+
+	resp, err := c.TransactionStatus(ctx, tx)
+	if err != nil {
+		t.Fatalf("error receiving transaction status: %s", err)
+	}
+
+	fmt.Printf("response: %s", resp)
 }
