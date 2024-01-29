@@ -95,7 +95,7 @@ func TestBuyQuote(t *testing.T) {
 
 }
 
-func TestTransactioNStatus(t *testing.T) {
+func TestTransactionStatus(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
