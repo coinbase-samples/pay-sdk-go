@@ -171,11 +171,14 @@ func GetPageKey(ptr *string, defaultValue string) string {
 	return defaultValue
 }
 
-func (c *Client) post(r *http.Request) ([]byte, error) {
+func (c *Client) post(ctx context.Context, url string, p io.Reader) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, p)
+	if err != nil {
+		return nil, err
+	}
+	c.SetHeaders(req)
 
-	c.SetHeaders(r)
-
-	resp, err := c.HttpClient.Do(r)
+	resp, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
