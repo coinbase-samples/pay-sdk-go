@@ -13,21 +13,7 @@ func (c *Client) BuyConfig(ctx context.Context) ([]byte, error) {
 
 	url := fmt.Sprintf(c.HttpBaseUrl + "/config")
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	c.SetHeaders(req)
-
-	resp, err := c.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
+	body, err := c.get(ctx, url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -78,29 +64,13 @@ func (c *Client) BuyQuote(ctx context.Context, quoteParams *BuyQuotePayload) (*B
 		return nil, err
 	}
 
+	url := fmt.Sprintf(c.HttpBaseUrl + "/quote")
 	payload, err := json.Marshal(quoteParams)
 	if err != nil {
 		return nil, err
 	}
 
-	url := fmt.Sprintf(c.HttpBaseUrl + "/quote")
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewBuffer(payload))
-	if err != nil {
-		return nil, err
-	}
-
-	c.SetHeaders(req)
-	resp, err := c.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-	if err := handleApiResponse(resp); err != nil {
-		return nil, err
-	}
-
-	body, err := io.ReadAll(resp.Body)
+	body, err := c.post(ctx, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
@@ -117,20 +87,7 @@ func (c *Client) BuyQuote(ctx context.Context, quoteParams *BuyQuotePayload) (*B
 func (c *Client) TransactionStatus(ctx context.Context, t *TransactionRequest) (*TransactionResponse, error) {
 
 	url := c.BuildTransactionUrl(t)
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	c.SetHeaders(req)
-	resp, err := c.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
-	}
-
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
+	body, err := c.get(ctx, url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -141,4 +98,27 @@ func (c *Client) TransactionStatus(ctx context.Context, t *TransactionRequest) (
 	}
 
 	return apiResponse, nil
+}
+
+func (c *Client) GetSessionToken(ctx context.Context, d *DestinationWallet) (*Token, error) {
+
+	url := "https://pay.coinbase.com/api/v1/onramp/token"
+	buf := &bytes.Buffer{}
+	err := json.NewEncoder(buf).Encode(d)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.post(ctx, url, buf)
+	if err != nil {
+		return nil, err
+	}
+
+	token := &Token{}
+	if err := json.Unmarshal(body, token); err != nil {
+		return nil, err
+	}
+
+	return token, err
+
 }
