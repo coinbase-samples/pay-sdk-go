@@ -190,10 +190,16 @@ func (c *Client) post(r *http.Request) ([]byte, error) {
 	return body, nil
 }
 
-func (c *Client) get(r *http.Request) ([]byte, error) {
-	c.SetHeaders(r)
+func (c *Client) get(ctx context.Context, url string, b io.Reader) ([]byte, error) {
 
-	resp, err := c.HttpClient.Do(r)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, b)
+	if err != nil {
+		return nil, err
+	}
+
+	c.SetHeaders(req)
+
+	resp, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
