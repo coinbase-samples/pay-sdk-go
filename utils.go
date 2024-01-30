@@ -170,3 +170,40 @@ func GetPageKey(ptr *string, defaultValue string) string {
 	}
 	return defaultValue
 }
+
+func (c *Client) post(r *http.Request) ([]byte, error) {
+
+	c.SetHeaders(r)
+
+	resp, err := c.HttpClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
+
+func (c *Client) get(r *http.Request) ([]byte, error) {
+	c.SetHeaders(r)
+
+	resp, err := c.HttpClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
+}
