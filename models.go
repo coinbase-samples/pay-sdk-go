@@ -156,3 +156,8 @@ type ApiError struct {
 	Message string    `json:"message"`
 	Details *[]string `json:"details,omitempty"`
 }
+
+type Token struct {
+	Token     string `json:"token"`
+	ChannelId string `json:"channel_id"`
+}
