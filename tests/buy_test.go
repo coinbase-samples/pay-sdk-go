@@ -106,7 +106,7 @@ func TestTransactionStatus(t *testing.T) {
 	c := pay.NewClient(creds, http.Client{})
 
 	tx := &pay.TransactionRequest{
-		PartnerUserId: "",
+		PartnerUserId: "", //need a partner user id
 	}
 
 	resp, err := c.TransactionStatus(ctx, tx)
