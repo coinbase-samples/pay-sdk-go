@@ -46,7 +46,6 @@ func TestBaseUrl(t *testing.T) {
 	c := pay.NewClient(creds, http.Client{})
 	url := "abc"
 	c.BaseUrl(url)
-	fmt.Print(c.HttpBaseUrl)
 
 	if c.HttpBaseUrl != url {
 		t.Errorf("Expected BaseUrl to be %s got %s instead", url, c.HttpBaseUrl)
