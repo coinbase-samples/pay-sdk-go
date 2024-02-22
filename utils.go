@@ -63,37 +63,6 @@ func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 	return baseUrl + userPart + "?" + v.Encode()
 }
 
-func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptions) (string, error) {
-
-	if c.Credentials.AppId == "" {
-		return "", errors.New("error: AppId not set")
-	}
-
-	host := DefaultHost
-	if p.Host != nil {
-		host = *p.Host
-	}
-
-	parsedUrl, err := url.Parse(host)
-	if err != nil {
-		return "", err
-	}
-	parsedUrl.Path = "/buy/select-asset"
-
-	destinationWallets, err := json.Marshal(p.OnRampAppParams.DestinationWallets)
-	if err != nil {
-		return "", err
-	}
-
-	v := url.Values{}
-	v.Set("appId", c.Credentials.AppId)
-	v.Set("destinationWallets", string(destinationWallets))
-
-	parsedUrl.RawQuery = v.Encode()
-
-	return parsedUrl.String(), nil
-}
-
 func (c *Client) ValidateQuoteParams(params *BuyQuotePayload) error {
 	//add validation for optional fields?
 

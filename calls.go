@@ -4,9 +4,11 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 // Returns the list of countries supported by Coinbase Pay, and the payment methods available in each country
@@ -126,4 +128,36 @@ func (c *Client) GetSessionToken(ctx context.Context, d *DestinationWallet) (*To
 
 	return token, err
 
+}
+
+// Returns a URL that can be launched by a browser (a link or button on web, or a webview, or linking on mobile)
+func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptions) (string, error) {
+
+	if c.Credentials.AppId == "" {
+		return "", errors.New("error: AppId not set")
+	}
+
+	host := DefaultHost
+	if p.Host != nil {
+		host = *p.Host
+	}
+
+	parsedUrl, err := url.Parse(host)
+	if err != nil {
+		return "", err
+	}
+	parsedUrl.Path = "/buy/select-asset"
+
+	destinationWallets, err := json.Marshal(p.OnRampAppParams.DestinationWallets)
+	if err != nil {
+		return "", err
+	}
+
+	v := url.Values{}
+	v.Set("appId", c.Credentials.AppId)
+	v.Set("destinationWallets", string(destinationWallets))
+
+	parsedUrl.RawQuery = v.Encode()
+
+	return parsedUrl.String(), nil
 }
