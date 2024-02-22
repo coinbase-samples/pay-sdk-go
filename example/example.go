@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -10,7 +9,7 @@ import (
 	"github.com/coinbase-samples/pay-sdk-go"
 )
 
-func gogo() {
+func main() {
 
 	creds, err := pay.SetCredentials()
 	if err != nil {
@@ -19,17 +18,27 @@ func gogo() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	client := pay.NewClient(creds, http.Client{})
+	//initiate client from the pay package
+	c := pay.NewClient(creds, http.Client{})
+	destinationAddress := "0x123"
+	d := pay.DestinationWallet{
+		Address:     destinationAddress,
+		Blockchains: &[]string{"Ethereum", "Solana"},
+		Assets:      &[]string{"USDC"},
+	}
+	p := pay.OnRampAppParams{
+		DestinationWallets: []pay.DestinationWallet{d},
+	}
+	o := pay.GenerateOnRampUrlOptions{
+		AppId:           c.Credentials.AppId,
+		Host:            &c.Host,
+		OnRampAppParams: p,
+	}
 
-	resp, err := client.BuyConfig(ctx)
+	url, err := c.GenerateOnRampUrl(ctx, o)
 	if err != nil {
-		fmt.Printf("error: %s", err)
+		fmt.Print(err)
 	}
 
-	config := &pay.BuyConfigResponse{}
-	if err = json.Unmarshal(resp, config); err != nil {
-		fmt.Printf("error: %s", err)
-	}
-
-	fmt.Printf("response: %v", config)
+	fmt.Println("Generated URL:", url)
 }
