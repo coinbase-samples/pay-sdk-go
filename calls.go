@@ -9,6 +9,7 @@ import (
 	"net/http"
 )
 
+// Returns the list of countries supported by Coinbase Pay, and the payment methods available in each country
 func (c *Client) BuyConfig(ctx context.Context) ([]byte, error) {
 
 	url := fmt.Sprintf(c.HttpBaseUrl + "/config")
@@ -22,6 +23,7 @@ func (c *Client) BuyConfig(ctx context.Context) ([]byte, error) {
 
 }
 
+// Returns the supported fiat currencies and available crypto assets that can be passed into the Buy Quote API
 func (c *Client) BuyOptions(ctx context.Context, countryCode string, subdivision *string) (*BuyOptionsResponse, error) {
 
 	url := fmt.Sprintf(c.HttpBaseUrl + "/options")
@@ -58,6 +60,7 @@ func (c *Client) BuyOptions(ctx context.Context, countryCode string, subdivision
 	return apiResponse, nil
 }
 
+// Provides a quote based on the asset the user would like to purchase and other parameters
 func (c *Client) BuyQuote(ctx context.Context, quoteParams *BuyQuotePayload) (*BuyQuoteResponse, error) {
 
 	if err := c.ValidateQuoteParams(quoteParams); err != nil {
@@ -84,6 +87,7 @@ func (c *Client) BuyQuote(ctx context.Context, quoteParams *BuyQuotePayload) (*B
 
 }
 
+// Provides clients with a list of the user's CBPay transactions
 func (c *Client) TransactionStatus(ctx context.Context, t *TransactionRequest) (*TransactionResponse, error) {
 
 	url := c.BuildTransactionUrl(t)
@@ -100,6 +104,7 @@ func (c *Client) TransactionStatus(ctx context.Context, t *TransactionRequest) (
 	return apiResponse, nil
 }
 
+// Returns a session token as a secure way for the client to initialize the Pay SDK
 func (c *Client) GetSessionToken(ctx context.Context, d *DestinationWallet) (*Token, error) {
 
 	url := "https://pay.coinbase.com/api/v1/onramp/token"
