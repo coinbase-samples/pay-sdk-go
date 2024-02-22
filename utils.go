@@ -64,7 +64,6 @@ func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 }
 
 func (c *Client) ValidateQuoteParams(params *BuyQuotePayload) error {
-	//add validation for optional fields?
 
 	if params == nil {
 		return errors.New("BuyQuotePayload cannot be nil")
@@ -75,7 +74,7 @@ func (c *Client) ValidateQuoteParams(params *BuyQuotePayload) error {
 	}
 
 	if params.PaymentAmount == "" {
-		//validate format?
+
 		return errors.New("PaymentAmount cannot be empty")
 	}
 
@@ -88,7 +87,7 @@ func (c *Client) ValidateQuoteParams(params *BuyQuotePayload) error {
 	}
 
 	if params.Country == "" {
-		//validate ISO?
+
 		return errors.New("country cannot be empty")
 	}
 
