@@ -134,7 +134,7 @@ func (c *Client) GetSessionToken(ctx context.Context, d *DestinationWallet) (*To
 func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptions) (string, error) {
 
 	if c.Credentials.AppId == "" {
-		return "", errors.New("error: AppId not set")
+		return "", errors.New("AppId not set")
 	}
 
 	host := DefaultHost
