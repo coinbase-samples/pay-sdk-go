@@ -144,7 +144,7 @@ func (c *Client) GenerateOnRampUrl(ctx context.Context, p GenerateOnRampUrlOptio
 
 	parsedUrl, err := url.Parse(host)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s \n host: %s", err, host)
 	}
 	parsedUrl.Path = "/buy/select-asset"
 
