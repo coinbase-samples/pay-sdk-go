@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Pay Go SDK is a sample libary that demonstrates the structure of a Coinbase Pay driver for the REST APIs and generating a onramp URL.
+The Pay Go is an SDK to drive the Coinbase Pay [REST APIs](https://docs.cloud.coinbase.com/pay-sdk/docs/rest-api-overview).
 
 ## License
 
