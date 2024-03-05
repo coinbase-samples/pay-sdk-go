@@ -23,7 +23,6 @@ func SetCredentials() (*Credentials, error) {
 	if !ok {
 		return nil, errors.New("environment variable CBPAY-APP-ID not set")
 	}
-	//Should be optional?
 	apiKey, ok := os.LookupEnv("CBPAY_API_KEY")
 	if !ok {
 		return nil, errors.New("environment variable CBPAY-API-KEY not set")
