@@ -25,9 +25,6 @@ Be sure to set your environment variables with your Coinbase Pay appId and API k
 
 ```bash
 export CBPAY_APP_ID=<Your-appId>
-```
-
-```bash
 export CBPAY_API_KEY=<Your-API-Key>
 ```
 
