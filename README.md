@@ -31,7 +31,10 @@ export CBPAY_API_KEY=<Your-API-Key>
 ```go
 func main() {
 
-	creds, err := pay.SetCredentials()
+	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
+	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
+
+	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
 	if err != nil {
 		fmt.Print(err)
 	}

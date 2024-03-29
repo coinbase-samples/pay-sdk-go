@@ -33,12 +33,12 @@ const (
 	DefaultHost    string           = "https://pay.coinbase.com"
 )
 
-func SetCredentials() (*Credentials, error) {
-	appId, ok := os.LookupEnv("CBPAY_APP_ID")
+func SetCredentials(appIdVar, apiKeyVar string) (*Credentials, error) {
+	appId, ok := os.LookupEnv(appIdVar)
 	if !ok {
 		return nil, errors.New("environment variable CBPAY-APP-ID not set")
 	}
-	apiKey, ok := os.LookupEnv("CBPAY_API_KEY")
+	apiKey, ok := os.LookupEnv(apiKeyVar)
 	if !ok {
 		return nil, errors.New("environment variable CBPAY-API-KEY not set")
 
