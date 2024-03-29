@@ -49,7 +49,10 @@ func main() {
 ```go
 func main() {
 
-	creds, err := pay.SetCredentials()
+	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
+	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
+
+	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -86,13 +89,17 @@ func main() {
 ```go
 func main() {
 
+	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
+	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
+
+	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
+	if err != nil {
+		fmt.Print(err)
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	creds := &pay.Credentials{
-		ApiKey: os.Getenv("CBPAY_API_KEY"),
-		AppId:  os.Getenv("CBPAY_APP_ID"),
-	}
 	c := pay.NewClient(creds, http.Client{})
 	buyConfig := pay.ConfigData{}
 
