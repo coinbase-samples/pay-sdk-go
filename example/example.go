@@ -27,7 +27,7 @@ import (
 
 func main() {
 
-	creds, err := pay.SetCredentials()
+	creds, err := pay.SetCredentials("CBPAY_APP_ID", "CBPAY_API_KEY")
 	if err != nil {
 		fmt.Print(err)
 	}

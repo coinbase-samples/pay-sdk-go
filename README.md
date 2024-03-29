@@ -31,10 +31,7 @@ export CBPAY_API_KEY=<Your-API-Key>
 ```go
 func main() {
 
-	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
-	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
-
-	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
+	creds, err := pay.SetCredentials("MY_APP_ID_VAR", "MY_API_KEY_VAR")
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -49,10 +46,7 @@ func main() {
 ```go
 func main() {
 
-	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
-	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
-
-	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
+	creds, err := pay.SetCredentials("MY_APP_ID_VAR", "MY_API_KEY_VAR")
 	if err != nil {
 		fmt.Print(err)
 	}
@@ -89,10 +83,7 @@ func main() {
 ```go
 func main() {
 
-	appIdEnvVar := "MY_CUSTOM_APP_ID_VAR"
-	apiKeyEnvVar := "MY_CUSTOM_API_KEY_VAR"
-
-	creds, err := pay.SetCredentials(appIdEnvVar, apiKeyEnvVar)
+	creds, err := pay.SetCredentials("MY_APP_ID_VAR", "MY_API_KEY_VAR")
 	if err != nil {
 		fmt.Print(err)
 	}
