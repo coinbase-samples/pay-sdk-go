@@ -36,7 +36,7 @@ func TestSetOptionsParams(t *testing.T) {
 	}
 
 	c := pay.NewClient(creds, http.Client{})
-	url := c.HttpBaseUrl + "/options"
+	url := c.HttpBaseUrl + "/buy/options"
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -66,7 +66,7 @@ func TestSetOptionsWithSubdivision(t *testing.T) {
 	}
 
 	c := pay.NewClient(creds, http.Client{})
-	url := c.HttpBaseUrl + "/options"
+	url := c.HttpBaseUrl + "/buy/options"
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 

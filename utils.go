@@ -18,7 +18,6 @@ package pay
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -69,7 +68,7 @@ func (c *Client) SetOptionsWithSubdivision(r *http.Request, countryCode string, 
 
 func (c *Client) BuildTransactionUrl(params *TransactionRequest) string {
 	baseUrl := fmt.Sprintf(c.HttpBaseUrl)
-	userPart := fmt.Sprintf("/user/%s/transactions", url.PathEscape(params.PartnerUserId))
+	userPart := fmt.Sprintf("/buy/user/%s/transactions", url.PathEscape(params.PartnerUserId))
 	v := url.Values{}
 
 	v.Set("page_key", GetPageKey(params.PageKey, "1"))
@@ -111,33 +110,6 @@ func (c *Client) ValidateQuoteParams(params *BuyQuotePayload) error {
 
 func (e *ApiError) Error() string {
 	return fmt.Sprintf("API error: Code: %d Message %s", e.Code, e.Message)
-}
-
-func handleApiResponse(resp *http.Response) error {
-	if resp.StatusCode == http.StatusOK {
-		return nil
-	}
-
-	apiError := &ApiError{}
-	apiError.Code = resp.StatusCode
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		apiError.Message = "failed to read response body"
-		return apiError
-	}
-
-	if err := json.Unmarshal(body, apiError); err != nil {
-		apiError.Message = "failed to parse response"
-		return apiError
-	}
-
-	if apiError.Message == "" {
-		apiError.Message = "Unknown API error occurred"
-	}
-
-	return apiError
-
 }
 
 func GetPageSize(pageSize *int) string {

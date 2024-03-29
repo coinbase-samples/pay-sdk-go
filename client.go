@@ -20,7 +20,7 @@ import (
 	"net/http"
 )
 
-var baseUrl = "https://pay.coinbase.com/api/v1/buy"
+var baseUrl = "https://pay.coinbase.com/api/v1"
 
 type Client struct {
 	HttpClient  http.Client
