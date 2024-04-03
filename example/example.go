@@ -1,8 +1,23 @@
+/**
+ * Copyright 2024-present Coinbase Global, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"time"
@@ -10,26 +25,36 @@ import (
 	"github.com/coinbase-samples/pay-sdk-go"
 )
 
-func gogo() {
+func main() {
 
-	creds, err := pay.SetCredentials()
+	creds, err := pay.SetCredentials("CBPAY_APP_ID", "CBPAY_API_KEY")
 	if err != nil {
 		fmt.Print(err)
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	client := pay.NewClient(creds, http.Client{})
+	//initiate client from the pay package
+	c := pay.NewClient(creds, http.Client{})
+	destinationAddress := "0x123"
+	d := pay.DestinationWallet{
+		Address:     destinationAddress,
+		Blockchains: &[]string{"Ethereum", "Solana"},
+		Assets:      &[]string{"USDC"},
+	}
+	p := pay.OnRampAppParams{
+		DestinationWallets: []pay.DestinationWallet{d},
+	}
+	o := pay.GenerateOnRampUrlOptions{
+		AppId:           c.Credentials.AppId,
+		Host:            &c.Host,
+		OnRampAppParams: p,
+	}
 
-	resp, err := client.BuyConfig(ctx)
+	url, err := c.GenerateOnRampUrl(ctx, o)
 	if err != nil {
-		fmt.Printf("error: %s", err)
+		fmt.Print(err)
 	}
 
-	config := &pay.BuyConfigResponse{}
-	if err = json.Unmarshal(resp, config); err != nil {
-		fmt.Printf("error: %s", err)
-	}
-
-	fmt.Printf("response: %v", config)
+	fmt.Println("Generated URL:", url)
 }
